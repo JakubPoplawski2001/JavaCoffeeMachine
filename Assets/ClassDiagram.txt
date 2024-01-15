@@ -1,0 +1,85 @@
+Source: https://mermaid.live/edit
+
+classDiagram
+  class CoffeeMachine{
+    -CoffeeType coffeeType
+    -CoffeeSize coffeeSize
+
+    -setCoffeeType(CoffeeType type)
+    +getCoffeeType()
+    +nextCoffeeType()
+    +previousCoffeeType()
+    +setCoffeeSize(CoffeeSize size)
+    +getCoffeeSize()
+
+    -float waterLevel
+    -float maxWaterLevel= 2.0f
+
+    -setWaterLevel(float waterLevel)
+    +getWaterLevel()
+    +addWater(float waterAmount)
+    -dispenseWater(float waterAmount)
+
+    -int milkLevel
+    -int maxMilkLevel= 1000
+
+    -setMilkLevel(int milkLevel)
+    +getMilkLevel()
+    +addMilk(int milkAmount)
+    -dispenseMilk(int milkAmount)
+
+    -HashMap~CoffeeType, int~ milkInCoffeeMap
+  
+    +increaseMilk()
+    +decreaseMilk()
+    +getMilkAmount()
+
+    +makeCoffee()
+    +showStatus()
+
+    +getRecentCoffeeHistory()
+    +analyse()
+  }
+  
+  class CoffeeType{
+    <<Enumeration>>
+    espresso
+    cappuccino
+    latte
+    americano
+    flatWhite
+    #newCoffeeType
+  }
+
+  class CoffeeSize{
+    <<Enumeration>>
+    small
+    medium
+    large
+  }
+
+CoffeeMachine <|-- DeliciousCoffee
+CoffeeMachine <|-- QuickBrew
+CoffeeMachine <|-- EliteEspresso
+
+class DeliciousCoffee{
+    ---
+}
+
+class QuickBrew{
+    +changeUnits()
+    #CoffeeType coffeeType
+}
+
+class EliteEspresso{
+    -preheatCup()
+    #showStatus()
+    #makeCoffee()
+
+    #float maxWaterLevel= 2.5
+
+    +getCoffeeLevel()
+    #getRecentCoffeeHistory()
+}
+
+note "Varibles: \n+ - public \n- - private \n# - overwritten"
