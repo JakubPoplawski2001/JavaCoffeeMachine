@@ -1,5 +1,6 @@
 package com.company;
 import com.company.Model.CoffeeMachine;
+import com.company.View.GuiView;
 
 
 public class Main {
@@ -18,5 +19,7 @@ public class Main {
         coffeeMachine.addWater(1.0f);
         System.out.println("Water lvl: " + coffeeMachine.getWaterLevel());
 
+
+        GuiView view = new GuiView();
     }
 }
