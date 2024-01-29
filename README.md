@@ -9,7 +9,7 @@ Class diagram of model component:
 ![ClassDiagram](/Assets/CoffeeMachine_ClassDiagram.png?raw=true "ClassDiagram")
 
 GUI created with [Swing](https://en.wikipedia.org/wiki/Swing_(Java)) toolkit:  
-<!-- ![Application Screenshot]() -->
+![Application Screenshot](/Assets/AppScreenShot.png "AppScreenShot")
 
 
 ## Tasks:
