@@ -36,4 +36,7 @@ GUI created with [Swing](https://en.wikipedia.org/wiki/Swing_(Java)) toolkit:
 
 ## Useful resources:
 - [Visual Guide to Swing Components](https://web.mit.edu/6.005/www/sp14/psets/ps4/java-6-tutorial/components.html)
+- [Java Swing Tutorial](https://www.javatpoint.com/java-swing)
+- [Java Swing Docs](https://docs.oracle.com/javase/tutorial/uiswing/components/index.html)
 - [w3schools Java](https://www.w3schools.com/java/default.asp)
+- [Java Full Course on YT by *Bro Code*](https://youtu.be/xk4_1vDrzzo?si=aDvK_PnVQErCFQ14)
