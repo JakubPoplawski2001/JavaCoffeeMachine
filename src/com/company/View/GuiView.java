@@ -1,10 +1,14 @@
 package com.company.View;
+import com.company.Controller.Controller;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-public class GuiView {
+public class GuiView implements IView{
+    public Controller controller;
 
     private JFrame frame;
 
@@ -33,12 +37,10 @@ public class GuiView {
     private JTextArea logArea;
 
     // Right Panel
-    private JLabel sizeLabel;
     private JToggleButton smallBtn;
     private JToggleButton mediumBtn;
     private JToggleButton largeBtn;
 
-    private JLabel coffeeMilkLabel;
     private JProgressBar coffeeMilkLvl;
     private JButton decreaseCoffeeMilkBtn;
     private JButton resetCoffeeMilkBtn;
@@ -51,11 +53,13 @@ public class GuiView {
 
 
     public GuiView(){
-        setupView();
 
     }
 
-    private void setupView(){
+    @Override
+    public void setupView(Controller controller){
+        this.controller = controller;
+
         // Frame
         frame = new JFrame("Coffee Machine");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,13 +76,24 @@ public class GuiView {
 
     private void setupMenuBar(){
         menuBar = new JMenuBar();
-        cmMenu = new JMenu("Coffee Machine");
-        // ToDo:
-        // Get list of coffee machines and set up this menu
-        cmMenu.add(new JMenuItem("Item 1"));
-        cmMenu.add(new JMenuItem("Item 2"));
-        cmMenu.add(new JMenuItem("Item 3"));
-        cmMenu.add(new JMenuItem("Item 4"));
+        cmMenu = new JMenu(controller.getSelectedCoffeeMachine());
+
+        // Add menu items for each coffee machine type
+        String[] cms = controller.getCoffeeMachinesList();
+        for (final String cm : cms) {
+            JMenuItem menuItem = new JMenuItem(cm);
+
+            // Set action on click
+            menuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    controller.selectCoffeeMachine(cm);
+                    cmMenu.setText(cm);
+                }
+            });
+
+            cmMenu.add(menuItem);
+        }
+
         menuBar.add(cmMenu);
         frame.setJMenuBar(menuBar);
     }
@@ -87,10 +102,40 @@ public class GuiView {
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.X_AXIS));
 
+        setupLevelBar(leftPanel, waterLvl, 0, controller.getMaxWaterlvl(), controller.getWaterLvl(),
+                addWaterBtn, remWaterBtn, waterLabel);
         // ToDo:
-        // Get max water & milk lvl
-        setupLevelBar(leftPanel, waterLvl, 0, 100, 30, addWaterBtn, remWaterBtn, waterLabel);
-        setupLevelBar(leftPanel, milkLvl, 0, 100, 70, addMilkBtn, remMilkBtn, milkLabel);
+        // Add ActionLisiners to btns before adding them to panel
+
+//        addWaterBtn.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                controller.addWater();
+//                waterLvl.setValue(controller.getWaterLvl());
+//            }
+//        });
+//        remWaterBtn.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                controller.remWater();
+//                waterLvl.setValue(controller.getWaterLvl());
+//            }
+//        });
+        setupLevelBar(leftPanel, milkLvl, 0, controller.getMaxMilkLvl(), controller.getMilkLvl(),
+                addMilkBtn, remMilkBtn, milkLabel);
+//        addMilkBtn.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                controller.addMilk();
+//                milkLvl.setValue(controller.getMilkLvl());
+//            }
+//        });
+//        remMilkBtn.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                controller.remMilk();
+//                milkLvl.setValue(controller.getMilkLvl());
+//                // ToDo:
+//                // update labels
+//                // create method for this
+//            }
+//        });
 
         frame.add(leftPanel, BorderLayout.WEST);
     }
@@ -226,4 +271,6 @@ public class GuiView {
 
         frame.add(rightPanel, BorderLayout.EAST);
     }
+
+
 }

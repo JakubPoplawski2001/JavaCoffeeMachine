@@ -1,6 +1,7 @@
 package com.company;
-import com.company.Model.CoffeeMachine;
+import com.company.Model.Model;
 import com.company.View.GuiView;
+import com.company.Controller.Controller;
 
 
 public class Main {
@@ -12,14 +13,9 @@ public class Main {
          // Stworzenie ekspresow do kawy
          // Uruchomienie aplikacji
 
-        CoffeeMachine coffeeMachine = new CoffeeMachine();
-        System.out.println("Water lvl: " + coffeeMachine.getWaterLevel());
-        coffeeMachine.addWater(3.0f);
-        System.out.println("Water lvl: " + coffeeMachine.getWaterLevel());
-        coffeeMachine.addWater(1.0f);
-        System.out.println("Water lvl: " + coffeeMachine.getWaterLevel());
-
-
+        Model model = new Model();
         GuiView view = new GuiView();
+        Controller controller = new Controller(model, view);
+
     }
 }
