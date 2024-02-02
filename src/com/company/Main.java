@@ -7,11 +7,6 @@ import com.company.Controller.Controller;
 public class Main {
 
     public static void main(String[] args) {
-        // W tym miejscu aplikacja startuje
-
-         // ToDo:
-         // Stworzenie ekspresow do kawy
-         // Uruchomienie aplikacji
 
         Model model = new Model();
         GuiView view = new GuiView();

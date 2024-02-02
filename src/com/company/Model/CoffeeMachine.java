@@ -1,8 +1,12 @@
 package com.company.Model;
+import com.company.Controller.Controller;
 import java.util.HashMap;
 
 
 public class CoffeeMachine {
+    public Controller controller;
+
+    protected final String name = "Coffee Machine";
 
     protected CoffeeType coffeeType;
     private CoffeeSize coffeeSize;
@@ -13,10 +17,12 @@ public class CoffeeMachine {
     private int milkLevel;
     public final int maxMilkLevel = 1000;
 
+    private int milkAmount;
     protected HashMap<CoffeeType, Integer> milkInCoffeeMap;
 
 
-    public CoffeeMachine(){
+    public CoffeeMachine(Controller controller){
+        this.controller = controller;
 
         // Setup milk in coffee table
         milkInCoffeeMap = new HashMap<CoffeeType, Integer>();
@@ -26,8 +32,12 @@ public class CoffeeMachine {
         milkInCoffeeMap.put(CoffeeType.AMERICANO, 0);
         milkInCoffeeMap.put(CoffeeType.FLAT_WHITE, 130);
 
+        // Set values to default
         setCoffeeType(CoffeeType.ESPRESSO);
         setCoffeeSize(CoffeeSize.MEDIUM);
+
+        setWaterLevel(0);
+        setMilkLevel(0);
     }
 
 
@@ -40,11 +50,13 @@ public class CoffeeMachine {
     }
 
     public void nextCoffeeType() {
-        // Implement nextCoffeeType method
+        int index = (coffeeType.ordinal() + 1) % CoffeeType.values().length;
+        setCoffeeType(CoffeeType.values()[index]);
     }
 
     public void previousCoffeeType() {
-        // Implement previousCoffeeType method
+        int index = (coffeeType.ordinal() + CoffeeType.values().length - 1) % CoffeeType.values().length;
+        setCoffeeType(CoffeeType.values()[index]);
     }
 
     public void setCoffeeSize(CoffeeSize size) {
@@ -57,7 +69,16 @@ public class CoffeeMachine {
 
     public void setWaterLevel(float waterLevel) {
         // ToDo:
-        // Sprawdzic czy nowy poziom wody miesci sie w zakresie <0, maxWaterLevel>
+        // Message log for errors
+        if (waterLevel > maxWaterLevel){
+            controller.logMessage("To much water");
+            this.waterLevel = maxWaterLevel;
+        }
+        else if (waterLevel < 0){
+            controller.logMessage("Water tank is empty");
+            this.waterLevel = 0;
+        }
+
         this.waterLevel = waterLevel;
     }
 
@@ -97,9 +118,12 @@ public class CoffeeMachine {
         // Implement decreaseMilk method
     }
 
+    public int getBaseMilkAmount(){
+        return milkInCoffeeMap.get(coffeeType);
+    }
+
     public int getMilkAmount() {
-        // Implement getMilkAmount method
-        return 0;
+        return milkAmount;
     }
 
     public void makeCoffee() {
@@ -115,8 +139,14 @@ public class CoffeeMachine {
         return "";
     }
 
-    public void analyse() {
+    public String getAnalyse() {
         // Implement analyse method
+        return "";
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 
     public enum CoffeeType{

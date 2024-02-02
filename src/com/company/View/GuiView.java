@@ -33,6 +33,7 @@ public class GuiView implements IView{
     private JLabel coffeeTypeLabel;
     private JButton prevCoffeeBtn;
     private JButton nextCoffeeBtn;
+    private JButton makeCoffeeBtn;
 
     private JTextArea logArea;
 
@@ -88,6 +89,7 @@ public class GuiView implements IView{
                 public void actionPerformed(ActionEvent e) {
                     controller.selectCoffeeMachine(cm);
                     cmMenu.setText(cm);
+                    cmLabel.setText(cm);
                 }
             });
 
@@ -102,74 +104,94 @@ public class GuiView implements IView{
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.X_AXIS));
 
-        setupLevelBar(leftPanel, waterLvl, 0, controller.getMaxWaterlvl(), controller.getWaterLvl(),
-                addWaterBtn, remWaterBtn, waterLabel);
-        // ToDo:
-        // Add ActionLisiners to btns before adding them to panel
 
-//        addWaterBtn.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                controller.addWater();
-//                waterLvl.setValue(controller.getWaterLvl());
-//            }
-//        });
-//        remWaterBtn.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                controller.remWater();
-//                waterLvl.setValue(controller.getWaterLvl());
-//            }
-//        });
-        setupLevelBar(leftPanel, milkLvl, 0, controller.getMaxMilkLvl(), controller.getMilkLvl(),
-                addMilkBtn, remMilkBtn, milkLabel);
-//        addMilkBtn.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                controller.addMilk();
-//                milkLvl.setValue(controller.getMilkLvl());
-//            }
-//        });
-//        remMilkBtn.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                controller.remMilk();
-//                milkLvl.setValue(controller.getMilkLvl());
-//                // ToDo:
-//                // update labels
-//                // create method for this
-//            }
-//        });
+        // Water lvl bar
+        ActionListener addWAL = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.addWater();
+                waterLvl.setValue(controller.getWaterLvl());
+            }
+        };
+        ActionListener remWAL = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.remWater();
+                waterLvl.setValue(controller.getWaterLvl());
+            }
+        };
 
-        frame.add(leftPanel, BorderLayout.WEST);
-    }
-
-    private void setupLevelBar(JPanel parentPanel, JProgressBar progressBar, int min, int max, int current,
-                               JButton addBtn, JButton remBtn, JLabel label){
         JPanel vBarPanel = new JPanel();
         vBarPanel.setLayout(new BoxLayout(vBarPanel, BoxLayout.Y_AXIS));
-        progressBar = new JProgressBar(SwingConstants.VERTICAL, min, max);
-        progressBar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        progressBar.setValue(current);
+        waterLvl = new JProgressBar(SwingConstants.VERTICAL, 0, controller.getMaxWaterLvl());
+        waterLvl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        waterLvl.setValue(controller.getWaterLvl());
 
-        addBtn = new JButton("+");
-        addBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        remBtn = new JButton("-");
-        remBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addWaterBtn = new JButton("+");
+        addWaterBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addWaterBtn.addActionListener(addWAL);
 
-        label = new JLabel(String.format("lvl: %s", current));
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        remWaterBtn = new JButton("-");
+        remWaterBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        remWaterBtn.addActionListener(remWAL);
 
-        vBarPanel.add(addBtn);
-        vBarPanel.add(progressBar);
-        vBarPanel.add(remBtn);
-        vBarPanel.add(label);
-        parentPanel.add(vBarPanel);
+        waterLabel = new JLabel(String.format("lvl: %s", controller.getWaterLvl()));
+        waterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        vBarPanel.add(addWaterBtn);
+        vBarPanel.add(waterLvl);
+        vBarPanel.add(remWaterBtn);
+        vBarPanel.add(waterLabel);
+        leftPanel.add(vBarPanel);
+
+
+        // Milk lvl bar
+        ActionListener addMAL = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.addMilk();
+                milkLvl.setValue(controller.getMilkLvl());
+            }
+        };
+        ActionListener remMAL = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.remMilk();
+                milkLvl.setValue(controller.getMilkLvl());
+                // ToDo:
+                // update labels
+                // create method for this
+            }
+        };
+
+        JPanel vBarPanel2 = new JPanel();
+        vBarPanel2.setLayout(new BoxLayout(vBarPanel2, BoxLayout.Y_AXIS));
+        milkLvl = new JProgressBar(SwingConstants.VERTICAL, 0, controller.getMaxMilkLvl());
+        milkLvl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        milkLvl.setValue(controller.getMilkLvl());
+
+        addMilkBtn = new JButton("+");
+        addMilkBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addMilkBtn.addActionListener(addMAL);
+
+        remMilkBtn = new JButton("-");
+        remMilkBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        remMilkBtn.addActionListener(remMAL);
+
+        milkLabel = new JLabel(String.format("lvl: %s", controller.getMilkLvl()));
+        milkLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        vBarPanel2.add(addMilkBtn);
+        vBarPanel2.add(milkLvl);
+        vBarPanel2.add(remMilkBtn);
+        vBarPanel2.add(milkLabel);
+        leftPanel.add(vBarPanel2);
+
+
+        frame.add(leftPanel, BorderLayout.WEST);
     }
 
     private void setupCenterPanel(){
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
-        // ToDo:
-        // Get CoffeeMachine type
-        cmLabel = new JLabel("CoffeeMachine");
+        cmLabel = new JLabel(controller.getSelectedCoffeeMachine());
         cmLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         cmLabel.setFont(cmLabel.getFont().deriveFont(20f));
 
@@ -178,15 +200,37 @@ public class GuiView implements IView{
 
         // ToDo:
         // Get CoffeeType
-        coffeeTypeLabel = new JLabel("Coffee Type");
+        coffeeTypeLabel = new JLabel(controller.getCoffeeType());
         coffeeTypeLabel.setHorizontalAlignment(JLabel.CENTER);
         coffeeTypeLabel.setFont(coffeeTypeLabel.getFont().deriveFont(16f));
         prevCoffeeBtn = new JButton("<");
+        prevCoffeeBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.previousCoffeeType();
+                coffeeTypeLabel.setText(controller.getCoffeeType());
+            }
+        });
+
         nextCoffeeBtn = new JButton(">");
+        nextCoffeeBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.nextCoffeeType();
+                coffeeTypeLabel.setText(controller.getCoffeeType());
+            }
+        });
+
+        makeCoffeeBtn = new JButton("Make Coffee");
+        makeCoffeeBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.makeCoffee();
+                updateUI();
+            }
+        });
 
         coffeeTypePanel.add(coffeeTypeLabel, BorderLayout.CENTER);
         coffeeTypePanel.add(prevCoffeeBtn, BorderLayout.WEST);
         coffeeTypePanel.add(nextCoffeeBtn, BorderLayout.EAST);
+        coffeeTypePanel.add(makeCoffeeBtn, BorderLayout.SOUTH);
 
         logArea = new JTextArea("Hello World!");
         logArea.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -216,6 +260,34 @@ public class GuiView implements IView{
         mediumBtn.setSelected(true);
         largeBtn = new JToggleButton("L");
 
+        smallBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.setCoffeeSize("S");
+
+                smallBtn.setSelected(true);
+                mediumBtn.setSelected(false);
+                largeBtn.setSelected(false);
+            }
+        });
+        mediumBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.setCoffeeSize("M");
+
+                smallBtn.setSelected(false);
+                mediumBtn.setSelected(true);
+                largeBtn.setSelected(false);
+            }
+        });
+        largeBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.setCoffeeSize("L");
+
+                smallBtn.setSelected(false);
+                mediumBtn.setSelected(false);
+                largeBtn.setSelected(true);
+            }
+        });
+
         sizePanel.add(smallBtn);
         sizePanel.add(mediumBtn);
         sizePanel.add(largeBtn);
@@ -228,15 +300,34 @@ public class GuiView implements IView{
 
         // ToDo:
         // Get current coffee default milk lvl and coffee size
-        coffeeMilkLvl = new JProgressBar(0, 100);
-        coffeeMilkLvl.setValue(50);
+        coffeeMilkLvl = new JProgressBar(0, 2 * controller.getCoffeeMilk());
+        coffeeMilkLvl.setValue(controller.getCoffeeMilk());
 
         JPanel btnPanel = new JPanel();
         btnPanel.setLayout(new GridLayout(1, 3, 16, 0));
 
         decreaseCoffeeMilkBtn = new JButton("-");
+        decreaseCoffeeMilkBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.decreaseCoffeeMilk();
+
+                coffeeMilkLvl.setValue(controller.getCoffeeMilk());
+            }
+        });
+
         increaseCoffeeMilkBtn = new JButton("+");
+        increaseCoffeeMilkBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.increaseCoffeeMilk();
+
+                coffeeMilkLvl.setValue(controller.getCoffeeMilk());
+            }
+        });
+
+        // ToDo:
+        // implement reset milk amount methods
         resetCoffeeMilkBtn = new JButton("Reset");
+        resetCoffeeMilkBtn.setEnabled(false);
 
         btnPanel.add(decreaseCoffeeMilkBtn);
         btnPanel.add(resetCoffeeMilkBtn);
@@ -252,8 +343,20 @@ public class GuiView implements IView{
 
         historyBtn = new JButton("History");
         historyBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        historyBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.history();
+            }
+        });
+
         analyseBtn = new JButton("Analyse");
         analyseBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        analyseBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.analyse();
+            }
+        });
+
         changeUnitsBtn = new JButton("Change Units");
         changeUnitsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         // ToDo:
@@ -270,6 +373,19 @@ public class GuiView implements IView{
         rightPanel.add(addonsPanel);
 
         frame.add(rightPanel, BorderLayout.EAST);
+    }
+
+    private void updateUI(){
+        // ToDo:
+        // if any property has change update values of that property
+
+
+    }
+
+    @Override
+    public void logMessage(String message){
+        String previousText = logArea.getText();
+        logArea.setText(previousText + message);
     }
 
 
