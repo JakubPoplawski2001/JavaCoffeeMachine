@@ -69,21 +69,19 @@ public class Controller {
     }
 
     public void addWater(){
-//        model.addWater
-        System.out.println("Water added");
+        model.selectedCm.addWater(0.25f);
     }
 
     public void remWater(){
-//        model.remWater
-        System.out.println("Water removed");
+        model.selectedCm.dispenseWater(0.25f);
     }
 
     public void addMilk(){
-        System.out.println("Milk added");
+        model.selectedCm.addMilk(200);
     }
 
     public void remMilk(){
-        System.out.println("Milk removed");
+        model.selectedCm.dispenseMilk(200);
     }
 
     public String getCoffeeType(){

@@ -90,6 +90,7 @@ public class GuiView implements IView{
                     controller.selectCoffeeMachine(cm);
                     cmMenu.setText(cm);
                     cmLabel.setText(cm);
+                    updateUI();
                 }
             });
 
@@ -109,13 +110,13 @@ public class GuiView implements IView{
         ActionListener addWAL = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.addWater();
-                waterLvl.setValue(controller.getWaterLvl());
+                updateUI();
             }
         };
         ActionListener remWAL = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.remWater();
-                waterLvl.setValue(controller.getWaterLvl());
+                updateUI();
             }
         };
 
@@ -147,16 +148,13 @@ public class GuiView implements IView{
         ActionListener addMAL = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.addMilk();
-                milkLvl.setValue(controller.getMilkLvl());
+                updateUI();
             }
         };
         ActionListener remMAL = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.remMilk();
-                milkLvl.setValue(controller.getMilkLvl());
-                // ToDo:
-                // update labels
-                // create method for this
+                updateUI();
             }
         };
 
@@ -198,8 +196,7 @@ public class GuiView implements IView{
         JPanel coffeeTypePanel = new JPanel();
         coffeeTypePanel.setLayout(new BorderLayout());
 
-        // ToDo:
-        // Get CoffeeType
+
         coffeeTypeLabel = new JLabel(controller.getCoffeeType());
         coffeeTypeLabel.setHorizontalAlignment(JLabel.CENTER);
         coffeeTypeLabel.setFont(coffeeTypeLabel.getFont().deriveFont(16f));
@@ -208,6 +205,7 @@ public class GuiView implements IView{
             public void actionPerformed(ActionEvent e) {
                 controller.previousCoffeeType();
                 coffeeTypeLabel.setText(controller.getCoffeeType());
+                updateUI();
             }
         });
 
@@ -216,6 +214,7 @@ public class GuiView implements IView{
             public void actionPerformed(ActionEvent e) {
                 controller.nextCoffeeType();
                 coffeeTypeLabel.setText(controller.getCoffeeType());
+                updateUI();
             }
         });
 
@@ -299,9 +298,9 @@ public class GuiView implements IView{
         milkPanel.setBorder(new TitledBorder("Milk in coffee control"));
 
         // ToDo:
-        // Get current coffee default milk lvl and coffee size
-        coffeeMilkLvl = new JProgressBar(0, 2 * controller.getCoffeeMilk());
-        coffeeMilkLvl.setValue(controller.getCoffeeMilk());
+        // Get current coffee default milk lvl
+        coffeeMilkLvl = new JProgressBar(0, 100);
+        coffeeMilkLvl.setValue(50);
 
         JPanel btnPanel = new JPanel();
         btnPanel.setLayout(new GridLayout(1, 3, 16, 0));
@@ -310,8 +309,7 @@ public class GuiView implements IView{
         decreaseCoffeeMilkBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.decreaseCoffeeMilk();
-
-                coffeeMilkLvl.setValue(controller.getCoffeeMilk());
+                updateUI();
             }
         });
 
@@ -319,8 +317,7 @@ public class GuiView implements IView{
         increaseCoffeeMilkBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.increaseCoffeeMilk();
-
-                coffeeMilkLvl.setValue(controller.getCoffeeMilk());
+                updateUI();
             }
         });
 
@@ -346,6 +343,7 @@ public class GuiView implements IView{
         historyBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.history();
+                updateUI();
             }
         });
 
@@ -354,6 +352,7 @@ public class GuiView implements IView{
         analyseBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.analyse();
+                updateUI();
             }
         });
 
@@ -378,6 +377,18 @@ public class GuiView implements IView{
     private void updateUI(){
         // ToDo:
         // if any property has change update values of that property
+        if (waterLvl.getValue() != controller.getWaterLvl()){
+            waterLvl.setValue(controller.getWaterLvl());
+            waterLabel.setText(String.format("lvl: %s", controller.getWaterLvl()));
+        }
+        if (milkLvl.getValue() != controller.getMilkLvl()){
+            milkLvl.setValue(controller.getMilkLvl());
+            milkLabel.setText(String.format("lvl: %s", controller.getMilkLvl()));
+        }
+        // disable btns and bar when no milk in coffee by default
+        if (coffeeMilkLvl.getValue() != controller.getCoffeeMilk()){
+            coffeeMilkLvl.setValue(controller.getCoffeeMilk());
+        }
 
 
     }
@@ -385,7 +396,7 @@ public class GuiView implements IView{
     @Override
     public void logMessage(String message){
         String previousText = logArea.getText();
-        logArea.setText(previousText + message);
+        logArea.setText(previousText + '\n' + message);
     }
 
 
